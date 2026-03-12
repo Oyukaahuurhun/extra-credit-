@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DM 130 Extra Credit Video</title>
+
+<style>
+.controls{
+margin-top:10px;
+}
+
+button{
+padding:8px 12px;
+margin-right:5px;
+cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>DM 130 Extra Credit Video</h2>
+
+<video id="myVideo" controls width="640" height="360">
+<source src="https://youtu.be/oWgTqLCLE8k?si=bWsIqBYxCcP9Yna2" type="video/mp4">
+</video>
+
+<div class="controls">
+<button id="switchEnglish">English</button>
+<button id="switchSpanish">Spanish</button>
+</div>
+
+
+<!-- English subtitles -->
+<script id="engVTT" type="text/vtt">
+WEBVTT
+
+00:00:00.000 --> 00:00:03.000
+Do you really think I can be happy? Of
+
+00:00:03.000 --> 00:00:05.000
+course. It's inside you. It's inside of
+
+00:00:05.000 --> 00:00:09.000
+all of us. And I don't think it.
+
+00:00:09.000 --> 00:00:11.000
+I feel it.
+
+00:00:11.000 --> 00:00:16.000
+I got this feeling inside my bones. It
+
+00:00:16.000 --> 00:00:23.000
+goes wavy when I
+
+00:00:23.000 --> 00:00:27.000
+soul. Just open up your heart. Let music
+
+00:00:27.000 --> 00:00:30.000
+take control. I got that sunshine in my
+
+00:00:30.000 --> 00:00:33.000
+pocket. Got that good soul in my feet. I
+
+00:00:33.000 --> 00:00:36.000
+feel that hot blood in my body when it
+</script>
+
+
+<!-- Spanish subtitles -->
+<script id="spaVTT" type="text/vtt">
+WEBVTT
+
+00:00:00.000 --> 00:00:02.000
+¿De verdad crees que puedo ser feliz?
+
+00:00:02.000 --> 00:00:06.000
+¡Claro que sí! Está dentro de ti. Está dentro de todos nosotros.
+
+00:00:06.000 --> 00:00:08.000
+Y no lo creo.
+
+00:00:08.000 --> 00:00:11.000
+Lo siento.
+
+00:00:11.000 --> 00:00:13.000
+Tengo esta sensación
+
+00:00:13.000 --> 00:00:15.000
+Dentro de mi cuerpo
+
+00:00:15.000 --> 00:00:19.000
+Se pone eléctrica cuando la enciendo
+
+00:00:19.000 --> 00:00:22.000
+Y si quieres
+
+00:00:22.000 --> 00:00:24.000
+Dentro de tu alma
+
+00:00:24.000 --> 00:00:27.000
+Solo abre tu corazón y que la música tome el control
+
+00:00:27.000 --> 00:00:30.000
+Tengo ese rayo de luz en el bolsillo
+
+00:00:30.000 --> 00:00:33.000
+Tengo ese buen soul en mis pies
+
+00:00:33.000 --> 00:00:36.000
+Siento esa sangre caliente en mi cuerpo</script>
+
+
+<script>
+
+const video = document.getElementById("myVideo");
+
+const engTrack = video.addTextTrack("subtitles","English","en");
+const spaTrack = video.addTextTrack("subtitles","Spanish","es");
+
+engTrack.mode = "showing";
+spaTrack.mode = "hidden";
+
+function loadVTT(track, text){
+
+const lines = text.trim().split("\n\n").slice(1);
+
+lines.forEach(block => {
+
+const parts = block.split("\n");
+const time = parts[0];
+const caption = parts.slice(1).join("\n");
+
+const times = time.split(" --> ");
+
+const cue = new VTTCue(
+parseTime(times[0]),
+parseTime(times[1]),
+caption
+);
+
+track.addCue(cue);
+
+});
+
+}
+
+function parseTime(t){
+const p = t.split(":");
+return (+p[0])*3600 + (+p[1])*60 + parseFloat(p[2]);
+}
+
+loadVTT(engTrack, document.getElementById("engVTT").textContent);
+loadVTT(spaTrack, document.getElementById("spaVTT").textContent);
+
+
+document.getElementById("switchEnglish").onclick = () => {
+engTrack.mode="showing";
+spaTrack.mode="hidden";
+};
+
+document.getElementById("switchSpanish").onclick = () => {
+engTrack.mode="hidden";
+spaTrack.mode="showing";
+};
+
+</script>
+
+</body>
+</html>
